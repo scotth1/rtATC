@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+
+ $Id$
+
+ maps.html
+
+ COPYRIGHT NOTICE:
+      Copyright (C) 2013 New South Wales Department of Education and Communities
+
+ HISTORY:
+    $Log$
+
+-->
+<html lang="en" ng-app="mapApp">
+    <head>
+        <title>Dashboard Maps</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/app.css"/>
+        <!-- link rel="stylesheet" href="css/nv.d3.css"/ -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    </head>
+    <body>
+        <div class="navbar navbar-inverse" role="navigation">    <!-- navbar-fixed-top -->
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="./index.html#/dash">Dashboard</a></li>
+                        <li><a href="./maps.html#/view1">Maps</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div ng-view></div>
+
+        <!-- In production use:
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+        -->
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular/angular-route.js"></script>
+        <script src="app/lib/angular/i18n/angular-ui-bootstrap/ui-bootstrap.js"></script>
+        <script src="app/lib/angular/i18n/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleReady"></script>
+        <script src="app/lib/angular/i18n/angular-ui/angular-ui.js"></script>
+        <script src="app/lib/angular/i18n/angular-ui-utils/ui-utils.js"></script>
+        <script src="app/lib/angular/i18n/angular-ui-map/ui-map.js"></script>
+        <script src="app/lib/angular/i18n/gmaps.js/gmaps.js"></script>
+        <script src="js/maps.app.js"></script>
+        <script src="js/maps.services.js"></script>
+        <script src="js/maps.controllers.js"></script>
+        <script src="js/maps.filters.js"></script>
+        <script src="js/maps.directives.js"></script>
+        
+        <script>
+    function onGoogleReady(){
+        console.log('Google maps api initialized.');
+        //angular.bootstrap(document.getElementById("map"),['mapApp']);
+    }
+  </script>
+    </body>
+</html>

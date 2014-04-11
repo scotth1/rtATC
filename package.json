@@ -1,0 +1,29 @@
+{
+    "name": "rtATC",
+    "description": "",
+    "version": "0.0.1",
+    "main": "./rtATC.js",
+    "author": {
+        "name": "scotth",
+        "email": "scotth1.git@popplanet.biz"
+    },
+    "dependencies": {
+        "express": "3.5.1",
+        "jade": "*",
+        "socket.io": "~0.9.16",
+        "winston": "0.7.2",
+        "node-cassandra-cql": "0.4.4",
+        "node-uuid": "~1.4.1"
+    },
+    "keywords": [],
+    "licenses": {
+        "type": "gpl30"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/scotth1/rtATC.git"
+    },
+    "bugs": {
+        "url": "http://github.com/scotth1/rtATC/issues"
+    }
+}

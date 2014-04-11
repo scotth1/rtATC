@@ -1,0 +1,105 @@
+<div class="container-fluid ">
+    <div class="row-fluid">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">Dashboard</h1>
+
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <nvd3-pie-chart
+                        data="exampleData1"
+                        id="exampleId1"
+                        x="xFunction()"
+                        y="yFunction()"
+                        showLabels="true"
+                        margin="{left:0,top:0,bottom:0,right:0}"
+                        height="200"
+                        width="200"
+                        pieLabelsOutside="false"
+                        showValues="true"
+                        labelType="percent">
+                        <svg class="img-responsive"></svg>
+                    </nvd3-pie-chart>
+
+                    <h4>Label</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <nvd3-pie-chart
+                        data="exampleData2"
+                        id="exampleId2"
+                        interactive="true"
+                        height="200"
+                        width="200"
+                        margin="{left:15,top:0,bottom:0,right:15}"
+                        showLabels="true"
+                        x="xFunction()"
+                        y="yFunction()"
+                        donut="true"
+                        donutRatio=".5"
+                        donutLabelsOutside="true">
+                        <svg ></svg>
+                    </nvd3-pie-chart>
+                    <h4>Label</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <nvd3-pie-chart
+                        data="exampleData3"
+                        id="exampleId3"
+                        x="xFunction()"
+                        y="yFunction()"
+                        showLabels="true"
+                        margin="{left:0,top:0,bottom:0,right:0}"
+                        height="200"
+                        width="200"
+                        pieLabelsOutside="false"
+                        showValues="true"
+                        labelType="percent">
+                        <svg class="img-responsive"></svg>
+                    </nvd3-pie-chart>
+                    <h4>Label</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <nvd3-pie-chart
+                        data="exampleData4"
+                        id="exampleId4"
+                        interactive="true"
+                        height="200"
+                        width="200"
+                        margin="{left:15,top:0,bottom:0,right:15}"
+                        showLabels="true"
+                        x="xFunction()"
+                        y="yFunction()"
+                        donut="true"
+                        donutRatio=".5"
+                        donutLabelsOutside="true">
+                        <svg class="img-responsive"></svg>
+                    </nvd3-pie-chart>
+                    <h4>Label</h4>
+                    <span class="text-muted">Something else</span>
+                </div>
+            </div>
+
+            <h2 class="sub-header">Section title</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr> 
+                            <th>#</th>
+                            <th>URL</th>
+                            <th>Title</th>
+                            <th>Inbound</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="rows in tablelist">
+                            <td ng-repeat="cell in rows.row">{{cell}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

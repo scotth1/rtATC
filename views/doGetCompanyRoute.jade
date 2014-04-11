@@ -1,0 +1,17 @@
+extends atnXML
+
+block content
+  session-id(type="string")= sessionId
+  departure-airport(type="string")= departICAO
+  arrival-airport(type="string")= arrivalICAO
+  alternate-airport(type="string")= altICAO
+  flight-level(type="number")= flightLevel
+  wpts
+    each wp, i in currentWaypoints
+      wp-name(type="string")= wp.wpName
+      wp-lat= wp.lat
+      wp-lon= wp.lon
+      wp-alt-cstr= wp.alt-cstr
+      wp-spd-cstr= wp.spd-cstr
+
+    

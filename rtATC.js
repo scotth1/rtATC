@@ -26,7 +26,7 @@ var seq = 1010;
 var typeWords = ["State Change", "Device Offline", "Authentication Failed", "User Not Authorised", "Unwilling to perform"];
 var statusInterval = 1200;
 var intervalRand = 0;
-var lastRecord = 0;
+var lastRecord = new Date();
 
 app.configure(function() {
     app.set('views', __dirname + '/views');
@@ -79,8 +79,11 @@ io.sockets.on('connection', function(socket) {
                         console.log('Oh dear...' + err);
                     } else {
                         console.log("Got all rows...");
+                        if (rowLength == null) {
+                          rowLength = 0;
+                        }
+                        console.log('%d rows where returned', (rowLength == null ? 0 : rowLength));
                     }
-                    console.log('%d rows where returned', rowLength);
                 }
         );
 

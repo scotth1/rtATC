@@ -13,7 +13,8 @@
         "socket.io": "~0.9.16",
         "winston": "0.7.2",
         "node-cassandra-cql": "0.4.4",
-        "node-uuid": "~1.4.1"
+        "node-uuid": "~1.4.1",
+        "mongodb":"~1.4.2."
     },
     "keywords": [],
     "licenses": {

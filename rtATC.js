@@ -18,7 +18,17 @@ io.configure(function() {
 });
 
 var cql = require('node-cassandra-cql');
-var client = new cql.Client({hosts: ['localhost'], keyspace: 'stormscraper'});
+//var client = new cql.Client({hosts: ['localhost'], keyspace: 'fgatc'});
+var mongoClient = require('mongodb').MongoClient;
+var db;
+
+// Initialize connection once
+mongoClient.connect("mongodb://localhost:27017/test", function(err, database) {
+    if (err)
+        throw err;
+
+    db = database;
+});
 
 
 var viewEngine = 'jade'; // modify for your view engine
@@ -60,32 +70,45 @@ io.sockets.on('connection', function(socket) {
     stationList.push('abc');
     var consistency = cql.types.consistencies.one;
     setInterval(function() {
-        client.eachRow('SELECT url,title,inbound_links,outbound_links,scrape_date from pages where scrape_date > ? limit 15 ALLOW FILTERING', [lastRecord], consistency,
-                function(n, row) {
-                    //the callback will be invoked per each row as soon as they are received
-                    //console.log('temperature value', n, row.temperature);
-                    var inboundSet = row.inbound_links;
-                    var inboundSetSize = 0;
-                    if (inboundSet == null || inboundSet === null || inboundSet.length == 0) {
-                        inboundSetSize = 0;
-                    } else {
-                        inboundSetSize = inboundSet.length;
-                    }
-                    io.sockets.emit('updateList', {row: [n, row.url, row.title, inboundSetSize, row.scrape_date]});
-                    lastRecord = row.scrape_date;
-                },
-                function(err, rowLength) {
-                    if (err) {
-                        console.log('Oh dear...' + err);
-                    } else {
-                        console.log("Got all rows...");
-                        if (rowLength == null) {
-                          rowLength = 0;
-                        }
-                        console.log('%d rows where returned', (rowLength == null ? 0 : rowLength));
-                    }
+        db.collection("atnMaintRecord").find({}, function(err, docs) {
+            docs.each(function(err, doc) {
+                if (doc) {
+                    io.sockets.emit('updateList', {row: [n, doc.recordType, doc.atnUser, doc.atnSessionId, doc.atnTime]});
                 }
-        );
+                else {
+                    //docs.end();
+                    console.log("end..");
+                }
+            });
+        });
+        /***************
+         client.eachRow('SELECT url,title,inbound_links,outbound_links,scrape_date from pages where scrape_date > ? limit 15 ALLOW FILTERING', [lastRecord], consistency,
+         function(n, row) {
+         //the callback will be invoked per each row as soon as they are received
+         //console.log('temperature value', n, row.temperature);
+         var inboundSet = row.inbound_links;
+         var inboundSetSize = 0;
+         if (inboundSet == null || inboundSet === null || inboundSet.length == 0) {
+         inboundSetSize = 0;
+         } else {
+         inboundSetSize = inboundSet.length;
+         }
+         io.sockets.emit('updateList', {row: [n, row.url, row.title, inboundSetSize, row.scrape_date]});
+         lastRecord = row.scrape_date;
+         },
+         function(err, rowLength) {
+         if (err) {
+         console.log('Oh dear...' + err);
+         } else {
+         console.log("Got all rows...");
+         if (rowLength == null) {
+         rowLength = 0;
+         }
+         console.log('%d rows where returned', (rowLength == null ? 0 : rowLength));
+         }
+         }
+         );
+         **************************/
 
     }, 500);
 
@@ -104,31 +127,31 @@ io.sockets.on('connection', function(socket) {
 });
 
 /************
-setInterval(function() {
-    var today = new Date();
-    var typeRand = Math.floor((Math.random() * typeWords.length));
-    var altRand = Math.floor((Math.random() * 8) + 32) * 10;
-    var fltNum = Math.floor((Math.random() * 120) + 12);
-    //io.sockets.emit('updateList', {row: [seq++, typeWords[typeRand], altRand, fltNum, today]});
-    //console.log("check for more rows...");
-    intervalRand = Math.floor((Math.random() * 6000));
-}, statusInterval + intervalRand);
-
-***************/
+ setInterval(function() {
+ var today = new Date();
+ var typeRand = Math.floor((Math.random() * typeWords.length));
+ var altRand = Math.floor((Math.random() * 8) + 32) * 10;
+ var fltNum = Math.floor((Math.random() * 120) + 12);
+ //io.sockets.emit('updateList', {row: [seq++, typeWords[typeRand], altRand, fltNum, today]});
+ //console.log("check for more rows...");
+ intervalRand = Math.floor((Math.random() * 6000));
+ }, statusInterval + intervalRand);
+ 
+ ***************/
 
 /******************
-setInterval(function() {
-    var today = new Date();
-    var setRand = Math.floor((Math.random() * 4) + 1);
-    var valueWords = ["One", "Two", "Three", "Four", "Five", "Six"];
-    var valueList = [];
-    var maxSize = Math.floor((Math.random() * 3) + 3);
-    for (var i = 0; i < maxSize; i++) {
-        var rnd = Math.floor((Math.random() * 15) + 2);
-        valueList.push({key: valueWords[i], y: rnd});
-    }
-    io.sockets.emit('updateStats', {dataset: setRand, values: valueList});
-    intervalRand = Math.floor((Math.random() * 6000));
-}, 3600 + intervalRand);
-
-**************/
+ setInterval(function() {
+ var today = new Date();
+ var setRand = Math.floor((Math.random() * 4) + 1);
+ var valueWords = ["One", "Two", "Three", "Four", "Five", "Six"];
+ var valueList = [];
+ var maxSize = Math.floor((Math.random() * 3) + 3);
+ for (var i = 0; i < maxSize; i++) {
+ var rnd = Math.floor((Math.random() * 15) + 2);
+ valueList.push({key: valueWords[i], y: rnd});
+ }
+ io.sockets.emit('updateStats', {dataset: setRand, values: valueList});
+ intervalRand = Math.floor((Math.random() * 6000));
+ }, 3600 + intervalRand);
+ 
+ **************/

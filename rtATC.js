@@ -112,7 +112,13 @@ io.sockets.on('connection', function(socket) {
 
     }, 500);
 
-
+    socket.on('disconnect', function() {
+        console.log("Lost connection to remote client: "+socket.namespace.manager.server._connectionKey+", using id: "+socket.id);
+       
+    });
+    socket.on('connect_failed', function() {
+        console.log("Received connection error on inbound websockets..."); 
+    });
 
     //client.execute('SELECT event_time, temperature FROM temperature WHERE station_id=?', stationList, consistency,
     //        function(err, result) {

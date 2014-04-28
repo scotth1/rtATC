@@ -4,25 +4,108 @@
 
 var app = angular.module('myApp.controllers', ['ngResource']);
 
+var markers = [];
 
 app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($scope, $rootScope, user) {
-        $rootScope.loggedOn = user.loggedOn; 
+        $rootScope.loggedOn = user.loggedOn;
         $scope.isCollapsed = true;
-        
+
         $scope.login = function(username, password) {
-            console.log("Username: "+username+", current status: "+$rootScope.loggedOn);
+            console.log("Username: " + username + ", current status: " + $rootScope.loggedOn);
             user.username = username;
             user.loggedOn = true;
             $rootScope.loggedOn = user.loggedOn;
-            console.log("loggedOn now: "+$rootScope.loggedOn);
-            $scope.css = "#";
+            console.log("loggedOn now: " + $rootScope.loggedOn);
+        };
+
+        $scope.user = user;
+
+        $scope.signIn = function(authResult) {
+            $scope.$apply(function() {
+                $scope.processAuth(authResult);
+            });
+        }
+
+        $scope.processAuth = function(authResult) {
+            $scope.immediateFailed = true;
+            if ($scope.isSignedIn) {
+                return 0;
+            }
+            if (authResult['access_token']) {
+                $scope.immediateFailed = false;
+                console.log("Google+ signed in.");
+                user.loggedOn = true;
+                // Successfully authorized, create session
+                //PhotoHuntApi.signIn(authResult).then(function(response) {
+                //    $scope.signedIn(response.data);
+                //});
+            } else if (authResult['error']) {
+                if (authResult['error'] == 'immediate_failed') {
+                    $scope.immediateFailed = true;
+                } else {
+                    console.log('Error:' + authResult['error']);
+                }
+            }
+        }
+
+        $scope.renderSignIn = function() {
+            gapi.signin.render('myGsignin', {
+                'callback': $scope.signIn,
+                'clientid': "674673148216-rhrflet3bsb78ilkh8ndg156icqh8kuv.apps.googleusercontent.com",
+                'requestvisibleactions': "",
+                'scope': "profile",
+                // Remove the comment below if you have configured
+                // appackagename in services.js
+                //'apppackagename': Conf.apppackagename,
+                'theme': 'dark',
+                'cookiepolicy': "single_host_origin"
+            });
         }
         
-        $scope.user = user;
-        
+        $scope.renderSignIn();
+  
+
     }]);
 
 app.controller('MyCtrl1', [function() {
+
+    }]);
+
+app.controller('MapCtrl1', ['$scope', function($scope) {
+        $scope.myMarkers = markers;
+
+        $scope.mapOptions = {
+            center: new google.maps.LatLng(-33.942876, 151.177178),
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        $scope.addMarker = function($event, $params) {
+            markers.push(new google.maps.Marker({
+                map: $scope.myMap,
+                position: $params[0].latLng
+            }));
+        };
+
+        $scope.setZoomMessage = function(zoom) {
+            $scope.zoomMessage = 'You just zoomed to ' + zoom + '!';
+            console.log(zoom, 'zoomed')
+        };
+
+        $scope.openMarkerInfo = function(marker) {
+            $scope.currentMarker = marker;
+            $scope.currentMarkerLat = marker.getPosition().lat();
+            $scope.currentMarkerLng = marker.getPosition().lng();
+            var degLat = Math.floor(marker.getPosition().lat());
+            var degLon = Math.floor(marker.getPosition().lng());
+            $scope.currentMarkerLatDM = degLat + " " + ((marker.getPosition().lat() - degLat) * 60).toFixed(5);
+            $scope.currentMarkerLngDM = degLon + " " + ((marker.getPosition().lng() - degLon) * 60).toFixed(5);
+            $scope.myInfoWindow.open($scope.myMap, marker);
+        };
+
+        $scope.setMarkerPosition = function(marker, lat, lng) {
+            marker.setPosition(new google.maps.LatLng(lat, lng));
+        };
 
     }]);
 

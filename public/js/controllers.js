@@ -7,18 +7,13 @@ var app = angular.module('myApp.controllers', ['ngResource']);
 var markers = [];
 
 app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($scope, $rootScope, user) {
-        $rootScope.loggedOn = user.loggedOn;
         $scope.isCollapsed = true;
 
         $scope.login = function(username, password) {
-            console.log("Username: " + username + ", current status: " + $rootScope.loggedOn);
-            user.username = username;
-            user.loggedOn = true;
-            $rootScope.loggedOn = user.loggedOn;
-            console.log("loggedOn now: " + $rootScope.loggedOn);
+            console.log("Username: " + username + ", current status: " + $rootScope.user.loggedOn);
+            $rootScope.user = {username: username, loggedOn: true, firstName: "Aaa", familyName: "Bbbbb"};
+            console.log("loggedOn now: " + $rootScope.user.loggedOn);
         };
-
-        $scope.user = user;
 
         $scope.signIn = function(authResult) {
             $scope.$apply(function() {
@@ -34,7 +29,8 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
             if (authResult['access_token']) {
                 $scope.immediateFailed = false;
                 console.log("Google+ signed in.");
-                user.loggedOn = true;
+                $rootScope.user['loggedOn'] = true;
+                gapi.client.load('plus','v1', $scope.loadGProfile);  // Trigger request to get the email address
                 // Successfully authorized, create session
                 //PhotoHuntApi.signIn(authResult).then(function(response) {
                 //    $scope.signedIn(response.data);
@@ -64,6 +60,22 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
         
         $scope.renderSignIn();
   
+        $scope.loadGProfile = function() {
+          var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+          request.execute($scope.loadProfileCallback);
+        }
+
+  /**
+   * Callback for the asynchronous request to the people.get method. The profile
+   * and email are set to global variables. Triggers the user's basic profile
+   * to display when called.
+   */
+   $scope.loadProfileCallback= function(obj) {
+      var profile, email;
+      profile = obj;
+      console.log("G+ user: "+JSON.stringify(obj));
+      $rootScope.user = {username: obj.id, firstName: obj['name']['givenName'], familyName: obj['name']['familyName']};
+   }
 
     }]);
 

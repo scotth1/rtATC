@@ -62,7 +62,12 @@
             </div>
         </div>	    	
     </div>
-
+    <div ng-show="user.loggedOn">
+      <div class="row">
+        <h3>You are authenticated.</h3>
+        Welcome {{ user.firstName }}
+      </div>
+    </div>
 
 
 </div>

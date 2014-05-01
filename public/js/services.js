@@ -28,7 +28,15 @@ app.factory('UserService', function($rootScope) {
                 loggedOn: true,
                 firstName: 'Aaa',
                 familyName: 'Bbbbb'};
-            return $rootScope.loggedOn = true;
+            return true;
+        },
+        logout: function() {
+            $rootScope.user = {
+                username: '',
+                loggedOn: false,
+                firstName: '',
+                familyName: ''
+            };
         },
         isLoggedOn: function() {
             return $rootScope.user.loggedOn;
@@ -42,15 +50,12 @@ app.factory('UserService', function($rootScope) {
         watchAuthenticationStatusChange: function() {
             var _self = this;
             FB.Event.subscribe('auth.authResponseChange', function(response) {
-                console.log("FB User is now '"+response.status+"'");
+                console.log("FB User is now '" + response.status + "'");
                 if (response.status === 'connected') {
-                    $rootScope.user.loggedOn = true;
                     console.log(JSON.stringify(response));
                     FB.api('/me', function(response) {
-                      console.log("FB User details: "+JSON.stringify(response));
-                      $rootScope.user.username = response.id;
-                      $rootScope.user.firstName = response.first_name;
-                      $rootScope.user.familyName = response.last_name;
+                        console.log("FB User details: " + JSON.stringify(response));
+                        $rootScope.user = {username: response['id'], firstName: response.first_name, familyName: response.last_name, loggedOn: true};
                     });
 
                     /*
@@ -64,10 +69,7 @@ app.factory('UserService', function($rootScope) {
                      The user is not logged to the app, or into Facebook:
                      destroy the session on the server.
                      */
-                     $rootScope.user.loggedOn = false;
-                     $rootScope.user.username = "";
-                     $rootScope.user.firstName = "";
-                     $rootScope.user.familyName = "";
+                    $rootScope.user = {loggedOn: false, username: "", firstName: "", familyName: ""};
                 }
             });
         }

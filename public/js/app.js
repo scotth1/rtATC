@@ -28,7 +28,7 @@ var app = angular.module('myApp', [
 app.run(['$rootScope', '$window', 'UserService',
     function($rootScope, $window, sAuth) {
 
-        $rootScope.user = {};
+        //$rootScope.user = {};
 
         $window.fbAsyncInit = function() {
             // Executed when the SDK is loaded

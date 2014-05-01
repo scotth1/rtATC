@@ -11,7 +11,8 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
 
         $scope.login = function(username, password) {
             console.log("Username: " + username + ", current status: " + $rootScope.user.loggedOn);
-            $rootScope.user = {username: username, loggedOn: true, firstName: "Aaa", familyName: "Bbbbb"};
+            //$rootScope.user = {username: username, loggedOn: true, firstName: "Aaa", familyName: "Bbbbb"};
+            user.login(username, password);
             console.log("loggedOn now: " + $rootScope.user.loggedOn);
         };
 
@@ -19,6 +20,16 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
             $scope.$apply(function() {
                 $scope.processAuth(authResult);
             });
+        }
+
+        $scope.googleSignOut = function() {
+            console.log("Signing G+ out..");
+            $scope.processSignout();
+        }
+        $scope.processSignout = function() {
+            gapi.auth.signOut();
+            user.logout();
+            console.log("Google signed out");
         }
 
         $scope.processAuth = function(authResult) {
@@ -30,7 +41,7 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
                 $scope.immediateFailed = false;
                 console.log("Google+ signed in.");
                 $rootScope.user['loggedOn'] = true;
-                gapi.client.load('plus','v1', $scope.loadGProfile);  // Trigger request to get the email address
+                gapi.client.load('plus', 'v1', $scope.loadGProfile);  // Trigger request to get the email address
                 // Successfully authorized, create session
                 //PhotoHuntApi.signIn(authResult).then(function(response) {
                 //    $scope.signedIn(response.data);
@@ -49,7 +60,7 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
                 'callback': $scope.signIn,
                 'clientid': "674673148216-rhrflet3bsb78ilkh8ndg156icqh8kuv.apps.googleusercontent.com",
                 'requestvisibleactions': "",
-                'scope': "profile",
+                'scope': "profile https://www.googleapis.com/auth/plus.profile.emails.read",
                 // Remove the comment below if you have configured
                 // appackagename in services.js
                 //'apppackagename': Conf.apppackagename,
@@ -57,25 +68,25 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
                 'cookiepolicy': "single_host_origin"
             });
         }
-        
+
         $scope.renderSignIn();
-  
+
         $scope.loadGProfile = function() {
-          var request = gapi.client.plus.people.get( {'userId' : 'me'} );
-          request.execute($scope.loadProfileCallback);
+            var request = gapi.client.plus.people.get({'userId': 'me'});
+            request.execute($scope.loadProfileCallback);
         }
 
-  /**
-   * Callback for the asynchronous request to the people.get method. The profile
-   * and email are set to global variables. Triggers the user's basic profile
-   * to display when called.
-   */
-   $scope.loadProfileCallback= function(obj) {
-      var profile, email;
-      profile = obj;
-      console.log("G+ user: "+JSON.stringify(obj));
-      $rootScope.user = {username: obj.id, firstName: obj['name']['givenName'], familyName: obj['name']['familyName']};
-   }
+        /**
+         * Callback for the asynchronous request to the people.get method. The profile
+         * and email are set to global variables. Triggers the user's basic profile
+         * to display when called.
+         */
+        $scope.loadProfileCallback = function(obj) {
+            var profile, email;
+            profile = obj;
+            console.log("G+ user: " + JSON.stringify(obj));
+            $rootScope.user = {username: obj['id'], firstName: obj['name']['givenName'], familyName: obj['name']['familyName'], loggedOn: true};
+        }
 
     }]);
 

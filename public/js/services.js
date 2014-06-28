@@ -17,7 +17,9 @@ app.factory('UserService', function($rootScope) {
         username: '',
         loggedOn: false,
         firstName: '',
-        familyName: ''
+        familyName: '',
+        email: '',
+        avatar: 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg'
     };
     console.log("init UserService factory");
 
@@ -35,7 +37,9 @@ app.factory('UserService', function($rootScope) {
                 username: '',
                 loggedOn: false,
                 firstName: '',
-                familyName: ''
+                familyName: '',
+                email: '',
+                avatar: 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg'
             };
         },
         isLoggedOn: function() {

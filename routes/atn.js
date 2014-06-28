@@ -110,7 +110,7 @@ exports.doUpdateController = function(cache) {
         if (session == null) {
             res.render('doUpdateController', {status: 'NO SESSION'});
         } else {
-
+          
         }
     };
 };

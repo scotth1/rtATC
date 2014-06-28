@@ -85,7 +85,7 @@ app.controller('UserCtrl', ['$scope', '$rootScope', 'UserService', function($sco
             var profile, email;
             profile = obj;
             console.log("G+ user: " + JSON.stringify(obj));
-            $rootScope.user = {username: obj['id'], firstName: obj['name']['givenName'], familyName: obj['name']['familyName'], loggedOn: true};
+            $rootScope.user = {username: obj['id'], firstName: obj['name']['givenName'], familyName: obj['name']['familyName'], email: obj['emails'][0]['value'], loggedOn: true, avatar: obj['image']['url']};
         }
 
     }]);

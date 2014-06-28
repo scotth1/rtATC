@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-10">
                 <div class="panel">
-                    <img class="pic img-circle" src="http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg" alt="...">
+                    <img class="pic img-circle" src="{{ user.avatar }}" alt="...">
                     <div ng-controller="UserCtrl" class="name"><small>{{ user.username }}</small></div>
                     <a href="#" class="btn btn-xs btn-primary pull-right" style="margin:10px;"><span class="glyphicon glyphicon-picture"></span> Change cover</a>
                 </div>
@@ -29,7 +29,7 @@
         <a type="button" data-toggle="collapse" data-target="#a1">
             <div class="btn-toolbar well well-sm" role="toolbar"  style="margin:0px;">
               <div class="btn-group"><input type="checkbox"></div>
-              <div class="btn-group col-md-3">Admin Kumar</div>
+              <div class="btn-group col-md-3">{{ user.firstName}} {{user.familyName}}</div>
               <div class="btn-group col-md-8"><b>Hi Check this new Bootstrap plugin</b> <div class="pull-right"><i class="glyphicon glyphicon-time"></i> 12:10 PM <button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-share-square-o"> Reply</i></button></div> </div>
             </div>
         </a>

@@ -13,17 +13,18 @@ app.value('version', '0.0.1');
 
 
 app.factory('UserService', function($rootScope) {
-    $rootScope.user = {
-        username: '',
-        loggedOn: false,
-        firstName: '',
-        familyName: '',
-        email: '',
-        avatar: 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg'
-    };
-    console.log("init UserService factory");
-
-
+    if (typeof $rootScope.user === "undefined") {
+        $rootScope.user = {
+            username: '',
+            loggedOn: false,
+            firstName: '',
+            familyName: '',
+            email: '',
+            avatar: 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg'
+        };
+        console.log("init UserService factory");
+    }
+    
     return  {
         login: function(username, password) {
             $rootScope.user = {username: username,
